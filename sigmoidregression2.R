@@ -191,3 +191,4 @@ for(i in 1:5) {
 }
 
 #Then examine error_matrix...
+View(error_mat)
