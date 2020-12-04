@@ -38,60 +38,6 @@ logistic <- function(z) {
   as.numeric(1/(1 + exp(-z)))
 }
 
-##Define cross-entropy loss for logistic, hyperbolic tangent, and probit,
-##The loss functions are all the same and can be minimized using optim()
-##from built-in stats package. Note that only parameter is weights, which
-##is the beta-vector. All 3 functions minimize the log cross-entropy loss
-##on the training set, which is hard-coded into the function
-logistic_cost <- function(weights) {
-  num_obvs <- nrow(training)
-  pred <- logistic(training %*% weights)
-  log_loss <- sum((-training_response * log(pred)) - ((1 - training_response) * log(1 - pred)))
-  return(log_loss / num_obvs)
-}
-
-tanh_cost <- function(weights) {
-  num_obvs <- nrow(training)
-  pred <- 1/2 * tanh(training %*% weights) + 1/2
-  log_loss <- sum((-training_response * log(pred)) - ((1 - training_response) * log(1 - pred)))
-  return(log_loss / num_obvs)
-}
-
-probit_cost <- function(weights) {
-  num_obvs <- nrow(training)
-  pred <- pnorm(training %*% weights)
-  log_loss <- sum((-training_response * log(pred)) - ((1 - training_response) * log(1 - pred)))
-  return(log_loss / num_obvs)
-}
-
-##Use gradient descent or other optimization 
-##Algorithm using optim(). This finds the wrights
-##Which minimize the log-loss and can be accessed
-##Through test$par
-test <- optim(c(0,0), fn = logistic_cost)
-test2 <- optim(c(0,0), fn = tanh_cost)
-test3 <- optim(c(0,0), fn = probit_cost)
-
-##Predict on the test set and set up the confusion matrix
-logistic_predictions <- ifelse(logistic(testing %*% test$par) > 0.5, 1, 0)
-logistic_confusion <- table(logistic_predictions, testing_response)
-logistic_confusion
-logistic_fscore <- logistic_confusion[2, 2]/(logistic_confusion[2,2]+0.5*(logistic_confusion[1,2] + logistic_confusion[2,1]))
-logistic_fscore #43.5-
-
-tanh_predictions <- ifelse(tanh(testing %*% test2$par) > 0.5, 1, 0)
-tanh_confusion <- table(tanh_predictions, testing_response)
-tanh_confusion
-tanh_fscore <- tanh_confusion[2, 2]/(tanh_confusion[2,2]+0.5*(tanh_confusion[1,2] + tanh_confusion[2,1]))
-tanh_fscore #20.225
-
-probit_predictions <- ifelse(pnorm(testing %*% test3$par) > 0.5, 1, 0)
-probit_confusion <- table(probit_predictions, testing_response)
-probit_confusion
-probit_fscore <- probit_confusion[2, 2]/(probit_confusion[2,2]+0.5*(probit_confusion[1,2] + probit_confusion[2,1]))
-probit_fscore #41.112
-
-
 ##============================================
 ##============================================
 ##Cross Validation
@@ -191,3 +137,4 @@ for(i in 1:5) {
 }
 
 #Then examine error_matrix...
+View(error_mat)
