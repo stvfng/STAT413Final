@@ -1,5 +1,6 @@
-# STAT413Final
-Meant to be read alongside paper "Binary Classification Through Alternative Sigmoid Regressions," which was only givnen to certain individuals.
+# STAT413 Final
+## Steven Feng and Lila Frenkel
+Meant to be used alongside paper "Binary Classification Through Alternative Sigmoid Regressions," which was only givnen to certain individuals.
 
 Please feel free to clone and investigate our data.
 
